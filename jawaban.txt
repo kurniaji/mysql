@@ -1,0 +1,208 @@
+-------------------------- SOAL 1 Membuat Database --------------------------
+Buatlah database dengan nama “myshop”. Tulislah di text jawaban pada nomor 1.
+
+#JAWABAN
+AkasakiRen@DESKTOP-3EJEL81 e:\sanbercode\XAMPP\mysql\bin
+# mysql -u root -p
+Enter password:
+Welcome to the MariaDB monitor.  Commands end with ; or \g.
+Your MariaDB connection id is 83
+Server version: 10.4.14-MariaDB mariadb.org binary distribution
+
+Copyright (c) 2000, 2018, Oracle, MariaDB Corporation Ab and others.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+MariaDB [(none)]> create database myshop;
+Query OK, 1 row affected (0.085 sec)
+
+MariaDB [(none)]> show databases;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| myshop             |
+| mysql              |
+| performance_schema |
+| phpmyadmin         |
+| test               |
+| user               |
++--------------------+
+7 rows in set (0.001 sec)
+
+MariaDB [(none)]>
+
+
+
+-------------------------- SOAL 2 Membuat Table di Dalam Database --------------------------
+Buatlah tabel – tabel baru di dalam database myshop sesuai data-data berikut.
+
+#JAWABAN
+
+MariaDB [(none)]> use myshop;
+Database changed
+
+
+MariaDB [myshop]> create table user(
+    -> id int auto_increment,
+    -> primary key(id),
+    -> name varchar(255),
+    -> email varchar(255),
+    -> password varchar(255)
+    -> );
+Query OK, 0 rows affected (0.532 sec)
+
+MariaDB [myshop]> describe user;
++----------+--------------+------+-----+---------+----------------+
+| Field    | Type         | Null | Key | Default | Extra          |
++----------+--------------+------+-----+---------+----------------+
+| id       | int(11)      | NO   | PRI | NULL    | auto_increment |
+| name     | varchar(255) | YES  |     | NULL    |                |
+| email    | varchar(255) | YES  |     | NULL    |                |
+| password | varchar(255) | YES  |     | NULL    |                |
++----------+--------------+------+-----+---------+----------------+
+4 rows in set (0.129 sec)
+
+
+MariaDB [myshop]> create table categories(
+    -> id int auto_increment,
+    -> primary key(id),
+    -> name varchar(255)
+    -> );
+Query OK, 0 rows affected (0.689 sec)
+
+MariaDB [myshop]> describe categories;
++-------+--------------+------+-----+---------+----------------+
+| Field | Type         | Null | Key | Default | Extra          |
++-------+--------------+------+-----+---------+----------------+
+| id    | int(11)      | NO   | PRI | NULL    | auto_increment |
+| name  | varchar(255) | YES  |     | NULL    |                |
++-------+--------------+------+-----+---------+----------------+
+2 rows in set (0.365 sec)
+
+
+MariaDB [myshop]> create table items(
+    -> id int auto_increment,
+    -> primary key(id),
+    -> name varchar(255),
+    -> description varchar(255),
+    -> price int,
+    -> stock int,
+    -> category_id int,
+    -> foreign key (category_id) references categories(id)
+    -> );
+Query OK, 0 rows affected (0.502 sec)
+
+MariaDB [myshop]> describe items;
++-------------+--------------+------+-----+---------+----------------+
+| Field       | Type         | Null | Key | Default | Extra          |
++-------------+--------------+------+-----+---------+----------------+
+| id          | int(11)      | NO   | PRI | NULL    | auto_increment |
+| name        | varchar(255) | YES  |     | NULL    |                |
+| description | varchar(255) | YES  |     | NULL    |                |
+| price       | int(11)      | YES  |     | NULL    |                |
+| stock       | int(11)      | YES  |     | NULL    |                |
+| category_id | int(11)      | YES  | MUL | NULL    |                |
++-------------+--------------+------+-----+---------+----------------+
+6 rows in set (0.084 sec)
+
+
+
+
+-------------------------- SOAL 3 Memasukkan Data pada Table --------------------------
+Masukkanlah data data berikut dengan perintah SQL “INSERT INTO . . ” ke dalam table yang sudah dibuat pada soal sebelumnya.
+
+MariaDB [myshop]> insert into user values ("", 'John Doe', 'john@doe.com', 'john123');
+Query OK, 1 row affected, 1 warning (0.130 sec)
+
+MariaDB [myshop]> insert into user values ("", 'Jane Doe', 'jane@doe.com', 'jenita123');
+Query OK, 1 row affected, 1 warning (0.113 sec)
+
+MariaDB [myshop]> select * from user
+    -> ;
++----+----------+--------------+-----------+
+| id | name     | email        | password  |
++----+----------+--------------+-----------+
+|  1 | John Doe | john@doe.com | john123   |
+|  2 | Jane Doe | jane@doe.com | jenita123 |
++----+----------+--------------+-----------+
+2 rows in set (0.001 sec)
+
+
+
+MariaDB [myshop]> insert into categories(name) VALUES ("gadget"), ("cloth"), ("men"), ("women"), ("branded");
+Query OK, 5 rows affected (0.104 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+MariaDB [myshop]> select * from categories;
++----+---------+
+| id | name    |
++----+---------+
+|  1 | gadget  |
+|  2 | cloth   |
+|  3 | men     |
+|  4 | women   |
+|  5 | branded |
++----+---------+
+5 rows in set (0.001 sec)
+
+
+
+MariaDB [myshop]> insert into items VALUES ('', 'Sumsang b50', 'hape keren dari merek sumsang ', '4000000', '100', 1);
+Query OK, 1 row affected, 1 warning (0.589 sec)
+
+MariaDB [myshop]> insert into items VALUES ('', 'Uniklooh', 'baju keren dari brand ternama', '500000', '50', '2');
+Query OK, 1 row affected, 1 warning (0.164 sec)
+
+MariaDB [myshop]> insert into items VALUES ('', 'IMHO Watch', 'jam tangan anak yang jujur banget', '2000000', '10', '1');
+Query OK, 1 row affected, 1 warning (0.091 sec)
+
+MariaDB [myshop]> select * from items;
++----+-------------+-----------------------------------+---------+-------+-------------+
+| id | name        | description                       | price   | stock | category_id |
++----+-------------+-----------------------------------+---------+-------+-------------+
+|  1 | Sumsang b50 | hape keren dari merek sumsang     | 4000000 |   100 |           1 |
+|  2 | Uniklooh    | baju keren dari brand ternama     |  500000 |    50 |           2 |
+|  3 | IMHO Watch  | jam tangan anak yang jujur banget | 2000000 |    10 |           1 |
++----+-------------+-----------------------------------+---------+-------+-------------+
+3 rows in set (0.001 sec)
+
+
+-------------------------- Soal 4 Mengambil Data dari Database -------------------------- 
+
+a. Mengambil data users
+Buatlah sebuah query untuk mendapatkan data seluruh user pada table users. Sajikan semua field pada table users KECUALI password nya.
+
+
+MariaDB [myshop]> select id, name, email from user;
++----+----------+--------------+
+| id | name     | email        |
++----+----------+--------------+
+|  1 | John Doe | john@doe.com |
+|  2 | Jane Doe | jane@doe.com |
++----+----------+--------------+
+2 rows in set (0.001 sec)
+
+
+b. Mengambil data items
+	- Buatlah sebuah query untuk mendapatkan data item pada table items yang memiliki harga di atas 1000000 (satu juta).
+
+		MariaDB [myshop]> select id, name, description,(price >1000000), stock, category_id from items;
+		+----+-------------+-----------------------------------+------------------+-------+-------------+
+		| id | name        | description                       | (price >1000000) | stock | category_id |
+		+----+-------------+-----------------------------------+------------------+-------+-------------+
+		|  1 | Sumsang b50 | hape keren dari merek sumsang     |                1 |   100 |           1 |
+		|  2 | Uniklooh    | baju keren dari brand ternama     |                0 |    50 |           2 |
+		|  3 | IMHO Watch  | jam tangan anak yang jujur banget |                1 |    10 |           1 |
+		+----+-------------+-----------------------------------+------------------+-------+-------------+
+		3 rows in set (0.001 sec)
+
+
+	- Buat sebuah query untuk mengambil data item pada table items yang memiliki name serupa atau mirip (like) dengan kata kunci “uniklo”, “watch”, atau “sang” (pilih salah satu saja).
+		MariaDB [myshop]> select * from items where name like 'unikloo%';
+		+----+----------+-------------------------------+--------+-------+-------------+
+		| id | name     | description                   | price  | stock | category_id |
+		+----+----------+-------------------------------+--------+-------+-------------+
+		|  2 | Uniklooh | baju keren dari brand ternama | 500000 |    50 |           2 |
+		+----+----------+-------------------------------+--------+-------+-------------+
+		1 row in set (0.001 sec)
